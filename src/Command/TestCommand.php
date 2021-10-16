@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Qi\Qi;
 use App\ResourceSpace\ResourceSpace;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,6 +13,7 @@ class TestCommand extends Command
 {
     private $params;
     private $resourceSpace;
+    private $qi;
 
     protected function configure()
     {
@@ -36,13 +38,22 @@ class TestCommand extends Command
     private function test()
     {
         $this->resourceSpace = new ResourceSpace($this->params);
+        $this->qi = new Qi($this->params);
         $searchQuery = $this->params->get('resourcespace_search_query');
-        $allResources = $this->resourceSpace->getAllResources(urlencode($searchQuery));
-        echo count($allResources) . ' resources total' . PHP_EOL;
-        foreach ($allResources as $resourceInfo) {
+//        $allResources = $this->resourceSpace->getAllResources(urlencode($searchQuery));
+//        echo count($allResources) . ' resources total' . PHP_EOL;
+
+        $allObjects = $this->qi->getAllObjects();
+        echo count($allObjects) . ' objects total' . PHP_EOL;
+
+/*        foreach ($allResources as $resourceInfo) {
             $resourceId = $resourceInfo['ref'];
             // Get this resource's metadata, but only if it has an appropriate offloadStatus
-//            $resourceMetadata = $this->resourceSpace->getResourceData($resourceId);
-        }
+            $resourceMetadata = $this->resourceSpace->getResourceData($resourceId);
+            var_dump($resourceMetadata);
+            $originalFilename = $resourceMetadata['originalfilename'];
+            $inventoryNumber = $resourceMetadata['inventorynumber'];
+            echo $originalFilename . PHP_EOL;
+        }*/
     }
 }
