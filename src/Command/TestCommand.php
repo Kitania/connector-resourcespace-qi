@@ -40,20 +40,22 @@ class TestCommand extends Command
         $this->resourceSpace = new ResourceSpace($this->params);
         $this->qi = new Qi($this->params);
         $searchQuery = $this->params->get('resourcespace_search_query');
-//        $allResources = $this->resourceSpace->getAllResources(urlencode($searchQuery));
-//        echo count($allResources) . ' resources total' . PHP_EOL;
+        $allResources = $this->resourceSpace->getAllResources(urlencode($searchQuery));
+        echo count($allResources) . ' resources total' . PHP_EOL;
 
         $allObjects = $this->qi->getAllObjects();
         echo count($allObjects) . ' objects total' . PHP_EOL;
 
-/*        foreach ($allResources as $resourceInfo) {
+        foreach ($allResources as $resourceInfo) {
             $resourceId = $resourceInfo['ref'];
             // Get this resource's metadata, but only if it has an appropriate offloadStatus
             $resourceMetadata = $this->resourceSpace->getResourceData($resourceId);
-            var_dump($resourceMetadata);
             $originalFilename = $resourceMetadata['originalfilename'];
             $inventoryNumber = $resourceMetadata['inventorynumber'];
+            if(array_key_exists($inventoryNumber, $allObjects)) {
+                echo 'Resource ' . $resourceId . ' has matching object ' . $allObjects[$inventoryNumber]->name . PHP_EOL;
+            }
             echo $originalFilename . PHP_EOL;
-        }*/
+        }
     }
 }
