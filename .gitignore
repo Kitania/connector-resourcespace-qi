@@ -9,3 +9,5 @@
 /vendor/
 ###< symfony/framework-bundle ###
 .env
+.idea/
+config/connector.yaml
