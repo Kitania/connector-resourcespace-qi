@@ -27,21 +27,19 @@ class Qi
     {
         $objects = array();
 
-        $objsJson = $this->get($this->baseUrl . '/get/object');
+        $objsJson = $this->get($this->baseUrl . '/get/object/_fields/object_number');
         $objs = json_decode($objsJson);
         $count = $objs->count;
         $records = $objs->records;
         foreach($records as $record) {
-            $id = explode(' - ', $record->name);
-            $objects[$id[0]] = $record;
+            $objects[$record->object_number] = $record;
         }
-        for($i = 0; $i < ($count + 499) / 500 - 1; $i++) {
-            $objsJson = $this->get($this->baseUrl . '/get/object/_offset/' . (($i + 1) * 500));
+        for($i = 1; $i < ($count + 499) / 500 - 1; $i++) {
+            $objsJson = $this->get($this->baseUrl . '/get/object/_fields/object_number/_offset/' . ($i * 500));
             $objs = json_decode($objsJson);
             $records = $objs->records;
             foreach($records as $record) {
-                $id = explode(' - ', $record->name);
-                $objects[$id[0]] = $record;
+                $objects[$record->object_number] = $record;
             }
         }
 
